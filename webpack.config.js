@@ -161,6 +161,7 @@ module.exports = ( env, argv ) => {
 								loader: 'eslint-loader',
 								options: {
 									formatter: require( 'eslint' ).CLIEngine.getFormatter( 'stylish' ),
+									quiet: true,
 								},
 							},
 						],
