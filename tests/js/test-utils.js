@@ -2,32 +2,28 @@
  * External dependencies
  */
 import { render } from '@testing-library/react';
-import PropTypes from 'prop-types';
 
 /**
- * WordPress dependencies
+ * Internal dependencies
  */
-import { Fragment } from '@wordpress/element';
+import { createTestRegistry, WithTestRegistry } from './utils';
 
-const TestProviders = ( { children } ) => {
-	return (
-		<Fragment>
-			{ children }
-		</Fragment>
-	);
-};
-
-TestProviders.defaultProps = {
-	children: undefined,
-};
-
-TestProviders.propTypes = {
-	children: PropTypes.node,
-};
-
-// custom render with the test provider component
-const customRender = ( ui, options ) => {
-	return render( ui, { wrapper: TestProviders, ...options } );
+// Override `@testing-library/react`'s render method with one that includes
+// our data store.
+const customRender = ( children, options = {} ) => {
+	const {
+		setupRegistry,
+		registry = createTestRegistry(),
+		...renderOptions
+	} = options;
+	return {
+		...render( (
+			<WithTestRegistry callback={ setupRegistry } registry={ registry }>
+				{ children }
+			</WithTestRegistry>
+		), renderOptions ),
+		registry,
+	};
 };
 
 // Export our own test utils from this file.

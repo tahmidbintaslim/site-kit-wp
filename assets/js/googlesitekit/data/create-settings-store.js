@@ -155,15 +155,16 @@ export const createSettingsStore = ( type, identifier, datapoint, {
 		 */
 		*saveSettings() {
 			const registry = yield getRegistry();
-			const values = yield registry.select( STORE_NAME ).getSettings();
+			const values = registry.select( STORE_NAME ).getSettings();
 
 			try {
 				const savedValues = yield actions.fetchSaveSettings( values );
+
 				return actions.receiveSaveSettings( savedValues );
-			} catch ( err ) {
+			} catch ( error ) {
 				// TODO: Implement an error handler store or some kind of centralized
 				// place for error dispatch...
-				return actions.receiveSaveSettingsFailed();
+				return actions.receiveSaveSettingsFailed( { error } );
 			}
 		},
 
@@ -209,11 +210,13 @@ export const createSettingsStore = ( type, identifier, datapoint, {
 		 * @since 1.6.0
 		 * @private
 		 *
+		 * @param {Object} args       Argument params.
+		 * @param {Object} args.error Error object.
 		 * @return {Object} Redux-style action.
 		 */
-		receiveSaveSettingsFailed() {
+		receiveSaveSettingsFailed( { error } ) {
 			return {
-				payload: {},
+				payload: { error },
 				type: RECEIVE_SAVE_SETTINGS_FAILED,
 			};
 		},
@@ -389,7 +392,7 @@ export const createSettingsStore = ( type, identifier, datapoint, {
 		 * @return {Object} Redux-style action.
 		 */
 		actions[ `set${ pascalCaseSlug }` ] = ( value ) => {
-			invariant( value, 'value is required.' );
+			invariant( typeof value !== 'undefined', 'value is required.' );
 
 			return {
 				payload: { value },

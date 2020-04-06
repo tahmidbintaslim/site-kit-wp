@@ -31,6 +31,8 @@ import { __ } from '@wordpress/i18n';
  */
 import { changeToPercent, getModulesData } from '../../../util';
 
+export * from './validation';
+
 export const extractAnalyticsDataForTrafficChart = ( reports ) => {
 	if ( ! reports || ! reports.length ) {
 		return null;
