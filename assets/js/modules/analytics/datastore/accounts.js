@@ -164,7 +164,7 @@ export const controls = {
 		return API.get( 'modules', 'analytics', 'accounts-properties-profiles' );
 	},
 	[ FETCH_CREATE_ACCOUNT ]: ( { payload: { accountName, propertyName, profileName, timezone } } ) => {
-		return API.get( 'modules', 'analytics', 'create-account-ticket', {
+		return API.set( 'modules', 'analytics', 'create-account-ticket', {
 			accountName,
 			propertyName,
 			profileName,

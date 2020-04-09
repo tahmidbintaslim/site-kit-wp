@@ -58,7 +58,7 @@ const AccountCreate = () => {
 			setIsSubmitting( false );
 			const { error: err } = e.payload;
 			if ( err ) {
-				setError( err.message );
+				setError( err.message ? err.message : __( 'Unknown error.', 'google-site-kit' ) );
 			}
 		} );
 	} );
